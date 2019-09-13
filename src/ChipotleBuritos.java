@@ -19,24 +19,26 @@ import java.util.Random;
  * 2) Format the output string for the particular choices made for each major category
  * 3) Create the individual choices for each major category
  * The first two actions cannot both be returned to the caller without difficulty.
+ * Each order is saved in a string array.
  *
  * Assumptions:
  * If a user selects "all" for multiple ingredients, then only one ingredient is added to the ingredients list.
  */
 
 public class ChipotleBuritos {
+    private static int numberOfOrders = 25;
     private static Random rand = new Random();
     private static int totalIngredients = 0;
     private static StringBuilder outputTmp = new StringBuilder();
+    private static String[] orders = new String[numberOfOrders];
 
     public static void main(String[] args) {
-        int numberOfOrders = 25;
         int strLength;              // used in the formatting of the StringBuilder object
         String[] ingredients = {"Rice", "Meat", "Beans", "Salsa", "Veggies", "Cheese", "Guac", "Queso", "SourCream"};
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         for (int i = 0; i < numberOfOrders; i++) {          // Establish the orders for 25 burittos
-            // outputTmp.append("Burrito " + (i + 1) + ": ");   // Beginning of each order line
+            String eachOrder;
             outputTmp.append("Burrito ");                   // Beginning of each order line
             outputTmp.append((i + 1));
             outputTmp.append(": ");
@@ -77,7 +79,9 @@ public class ChipotleBuritos {
             outputTmp.append("\t");
             outputTmp.append(formatter.format(calcAmount(totalIngredients)));
 
-            System.out.println(outputTmp.toString());       // Final output string for each burrito order
+            eachOrder = outputTmp.toString();               // Final output string for each burrito order
+            System.out.println(eachOrder);                  // Print to output
+            orders[i] = eachOrder;                          // Saving each individual order
             System.out.println();
 
             outputTmp.delete(0, outputTmp.length());        // Start with an empty StringBulider object for each order
