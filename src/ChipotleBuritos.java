@@ -1,8 +1,6 @@
 import java.text.NumberFormat;
 import java.util.ArrayList;
-// import java.util.HashMap;
 import java.util.Random;
-// import java.util.Scanner;
 
 /**
  * Author:  John Kneisler
@@ -16,13 +14,17 @@ import java.util.Random;
  * Design Decisions:
  * Each major choice of ingredients where multiple choices are required were encapsulated in their own method.
  * For ingredients that are yes|no choices, a single method was created for them.
+ * The decision was made to return void from these methods because each method is responsible for three actions
+ * 1) Determine the number of ingredients for the choice made (used to determine the total cost of the order)
+ * 2) Format the output string for the particular choices made for each major category
+ * 3) Create the individual choices for each major category
+ * The first two actions cannot both be returned to the caller without difficulty.
  *
  * Assumptions:
  * If a user selects "all" for multiple ingredients, then only one ingredient is added to the ingredients list.
  */
 
 public class ChipotleBuritos {
-    // private static Scanner key = new Scanner(System.in);
     private static Random rand = new Random();
     private static int totalIngredients = 0;
     private static StringBuilder outputTmp = new StringBuilder();
@@ -30,27 +32,21 @@ public class ChipotleBuritos {
     public static void main(String[] args) {
         int numberOfOrders = 25;
         int strLength;              // used in the formatting of the StringBuilder object
-        // HashMap<String, String> burrito = new HashMap<>();
         String[] ingredients = {"Rice", "Meat", "Beans", "Salsa", "Veggies", "Cheese", "Guac", "Queso", "SourCream"};
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-        for (int i = 0; i < numberOfOrders; i++) {              // Establish the orders for 25 burittos
+        for (int i = 0; i < numberOfOrders; i++) {          // Establish the orders for 25 burittos
 
             for (String ingredient : ingredients) {
                 if (ingredient.equals("Rice")) {
-                    // burrito.put(ingredient, getRice());
                     getRice();
                 } else if (ingredient.equals("Meat")) {
-                    // burrito.put(ingredient, getMeat());
                     getMeat();
                 } else if (ingredient.equals("Beans")) {
-                    // burrito.put(ingredient, getBeans());
                     getBeans();
                 } else if (ingredient.equals("Salsa")) {
-                    // burrito.put(ingredient, getSalsa());
                     getSalsa();
                 } else if (ingredient.equals("Veggies")) {
-                    // burrito.put(ingredient, getVeggies());
                     getVeggies();
                 } else if (ingredient.equals("Cheese")) {
                     if (getItem()) {
@@ -64,7 +60,6 @@ public class ChipotleBuritos {
                     if (getItem()) {
                         outputTmp.append("queso, ");
                     }
-
                 } else if (ingredient.equals("SourCream")) {
                     if (getItem()) {
                         outputTmp.append("sour cream, ");
@@ -72,27 +67,13 @@ public class ChipotleBuritos {
                 }
             }
 
-            // Output for the orders
-            /*
-            for (String keyName : burrito.keySet()) {
-                System.out.println("key: " + keyName + " value: " + burrito.get(keyName));
-            }
-            System.out.println("Number of ingredients: " + totalIngredients);
-            System.out.println("The cost of the order is " + formatter.format(calcAmount(totalIngredients)));
-
-            outputTmp.append("\t");
-            outputTmp.append(formatter.format(calcAmount(totalIngredients)));
-
-            System.out.println(outputTmp.toString());
-            System.out.println();
-
-             */
+            // Output for each order
             strLength = outputTmp.length();
-            outputTmp.delete(strLength - 2, strLength);         // remove the last ", " in the StringBuilder object
+            outputTmp.delete(strLength - 2, strLength);     // remove the last ", " in the StringBuilder object
             outputTmp.append("\t");
             outputTmp.append(formatter.format(calcAmount(totalIngredients)));
 
-            System.out.println(outputTmp.toString());
+            System.out.println(outputTmp.toString());       // Final output string for each burrito order
             System.out.println();
 
             outputTmp.delete(0, outputTmp.length());        // Start with an empty StringBulider object for each order
@@ -113,7 +94,6 @@ public class ChipotleBuritos {
     }
 
     private static void getRice() {
-    // private static String getRice() {
         String riceName;
         ArrayList<String> rice = new ArrayList<>();
         rice.add("white");
@@ -136,12 +116,9 @@ public class ChipotleBuritos {
             outputTmp.append(riceName);
             outputTmp.append(" rice, ");
         }
-
-        // return riceName;
     }
 
     private static void getMeat() {
-    // private static String getMeat() {
         String meatName;
         ArrayList<String> meat = new ArrayList<>();
         meat.add("chicken");
@@ -168,12 +145,9 @@ public class ChipotleBuritos {
             outputTmp.append(meatName);
             outputTmp.append(", ");
         }
-
-        // return meatName;
     }
 
     private static void getBeans() {
-    // private static String getBeans() {
         String beanName;
         ArrayList<String> bean = new ArrayList<>();
         bean.add("pinto");
@@ -195,12 +169,9 @@ public class ChipotleBuritos {
             outputTmp.append(beanName);
             outputTmp.append(" beans, ");
         }
-
-        // return beanName;
     }
 
     private static void getSalsa() {
-    // private static String getSalsa() {
         String salsaName;
         ArrayList<String> salsa = new ArrayList<>();
         salsa.add("mild");
@@ -224,12 +195,9 @@ public class ChipotleBuritos {
             outputTmp.append(salsaName);
             outputTmp.append(" salsa, ");
         }
-
-        // return salsaName;
     }
 
     private static void getVeggies() {
-    // private static String getVeggies() {
         String veggieName;
         ArrayList<String> veggie = new ArrayList<>();
         veggie.add("lettuce");
@@ -252,15 +220,12 @@ public class ChipotleBuritos {
             outputTmp.append(veggieName);
             outputTmp.append(", ");
         }
-
-        // return veggieName;
     }
 
     // These methods are different from those above, they are Yes/No questions or boolean
     private static boolean getItem() {
         boolean decision = false;
         int choice = rand.nextInt(2);
-        // System.out.println("CHOICE: " + choice);             REMOVE
         if (choice == 1) {
             totalIngredients += 1;
             decision = true;
