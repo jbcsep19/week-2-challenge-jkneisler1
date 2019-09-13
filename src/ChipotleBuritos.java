@@ -36,6 +36,10 @@ public class ChipotleBuritos {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         for (int i = 0; i < numberOfOrders; i++) {          // Establish the orders for 25 burittos
+            // outputTmp.append("Burrito " + (i + 1) + ": ");   // Beginning of each order line
+            outputTmp.append("Burrito ");                   // Beginning of each order line
+            outputTmp.append((i + 1));
+            outputTmp.append(": ");
 
             for (String ingredient : ingredients) {
                 if (ingredient.equals("Rice")) {
